@@ -46,15 +46,14 @@ public class MenuBar {
     filesListBox.getCaptionLabel().set("Select file");
     filesListBox.getCaptionLabel().setColor(0xffff0000);
     filesListBox.getCaptionLabel().getStyle().marginTop = 3;
-    //filesListBox.valueLabel().style().marginTop = 3;
-
-    for (int i=0; i< this.filenames.length; i++) {
-       filesListBox.addItem(filenames[i], i);
-      //ListBoxItem lbi = filesListBox.addItem(filenames[i], i);
-      //lbi.setColorBackground(0);
+    
+    if(this.filenames != null){
+      for (int i=0; i< this.filenames.length; i++) {
+        filesListBox.addItem(filenames[i], i);
+      
      
+      }
     }
-
     cp5.addButton("crosshatch")
       .setPosition(xPosition + 130, yPosition  )
         .setSize(60, 30)

@@ -27,11 +27,11 @@ void setup() {
   textFont(font);
   background(255);
   
-  dataPath = "C:/Users/Jose/Documents/Processing/imgToGCode" + "/data";
-  //dataPath = sketchPath + "/data";
-  gcodePath = "C:/Users/Jose/Documents/Processing/imgToGCode" + "/gcode";
-  generatedImgs = "C:/Users/Jose/Documents/Processing/imgToGCode" + "/generatedImages";
-  resultImgs = "C:/Users/Jose/Documents/Processing/imgToGCode" + "/resultImages";
+  dataPath = sketchPath() + "/data";
+  //dataPath = sketchPath() + "/data";
+  gcodePath = sketchPath() + "/gcode";
+  generatedImgs = sketchPath() + "/generatedImages";
+  resultImgs = sketchPath() + "/resultImages";
 
   File gcodeDir = new File(gcodePath);
   if (!gcodeDir.exists()) {
