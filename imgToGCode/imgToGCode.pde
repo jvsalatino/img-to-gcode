@@ -139,14 +139,17 @@ void cuatricromia(int value){
   //c.showPreview(1000,300);
 }
 
-void contour(int value){  
+void contour(){ 
+  clear();
   ContourAlgorithm c = new ContourAlgorithm(imgPreview.getOriginalImage().get(), Scale);
   cuatricromia(0);
   c.calculate();
+  savejpg();
   
 }
 
-void crosshatch(int value) {
+void crosshatch() {
+  clear();
   cuatricromia(0);
   float densidad = Densidad;
   float scale = Scale;
@@ -160,14 +163,14 @@ void crosshatch(int value) {
   c.drawCyan("cyan", generatedImgs + "/cyan-img.jpg", 40, 255, 250);
 
   c.drawBlack("black", generatedImgs + "/black-img.jpg", 0, 0, 0);
-   
+  savejpg(); 
 }
 
-public void savejpg(int value) {
+public void savejpg() {
   PImage imgc = get(0, 0, imgPreview.getOriginalWidth(), imgPreview.getOriginalHeight());
   imgc.save(resultImgs+ "/"+imgPreview.getOriginalName()+"-final.jpg");
 }
 
-public void clear(int value){
+public void clear(){
   background(255);
 }
