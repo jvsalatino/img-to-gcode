@@ -7,6 +7,7 @@ public class ImagePreview {
   public ImagePreview(String imageFileName) {
     this.originalName = imageFileName;
     originalImage = loadImage(imageFileName);
+    
   }
 
   public void setXPosition(int x) {
@@ -36,9 +37,9 @@ public class ImagePreview {
   public void showPreview() {
     fill(255);
     noStroke();
-    rect(xPosition, yPosition,(originalImage.width/8), (originalImage.height/8));
+    rect(xPosition, yPosition,300, 300);
+    //rect(xPosition, yPosition,(originalImage.width/8), (originalImage.height/8));
     // Drawing scaled preview
-    image(originalImage, xPosition, yPosition, (originalImage.width/8), (originalImage.height/8));
+    image(originalImage, xPosition, yPosition+50, (originalImage.width/8), (originalImage.height/8));
   }
 }
-

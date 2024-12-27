@@ -14,66 +14,207 @@ class CrossHatchAlgorithm {
   private float j=0;
   private int k=0;
   private int cant = 0;
-  private float scale = 1.0;
+  private float densidad = 20.0;
+  private float escala = 20.0;
   private PrintWriter output;
 
-  public CrossHatchAlgorithm(String name, float scale) {
+  public CrossHatchAlgorithm(String name, float densidad , float escala) {
     
     this.imageName = name;
-    this.scale = scale;
+    this.densidad = densidad;
+    this.escala = escala;
+    
+    
   }
   
   
+  /*
+   private float escala = 3.3; //PARA ARCHIVO 800 X 600 : A3 2.5 A4 3.3
+  private float Scale = 30.0;
+ 
+  private int paso_real = int(7 * (1 + ((100 - scale)/100)));
+ 
+  
+  */
+ //*********************************** 
+float coef = 1.0;
 
-  public void drawColour(String colourName, String imagePath, int red, int green, int blue ) {
 
+  public void drawCyan(String colourName, String imagePath, int red, int green, int blue ) {
+     beginRecord(SVG, "cian.svg");
+    int paso_real = int(7 * (coef + ((100 - densidad)/100)));
+    //println("paso: "+paso_real);
+    cant = 0;
+    PImage colourImage = loadImage(imagePath);
+
+    output = createWriter(gcodePath + "/" + imageName+"_"+colourName+".gcode");
+   
+    output.println("G21 G90");
+    output.println("M92 Z1600.0");
+    output.println("G28");
+    output.println("G0 F500");
+    output.println("G0 Z4.5"); 
+    output.println("M1 Put pen and click");
+    
+
+    lineLtoR(colourImage,  0.0,  25.0, paso_real, 1, 10, red, green, blue, 1, 1);
+    lineRtoL(colourImage,  0.0,  50.0, paso_real, 1, 10, red, green, blue, 1, 1);
+    lineLtoR(colourImage,  0.0,  75.0, paso_real, 1, 10, red, green, blue, 2, 1);
+    lineRtoL(colourImage,  0.0, 100.0, paso_real, 1, 10, red, green, blue, 2, 1);
+    lineLtoR(colourImage,  0.0, 125.0, paso_real, 1, 10, red, green, blue, 3, 1);
+    lineRtoL(colourImage,  0.0, 150.0, paso_real, 1, 10, red, green, blue, 3, 1);
+    lineLtoR(colourImage,  0.0, 175.0, paso_real, 1, 10, red, green, blue, 4, 1);
+    lineRtoL(colourImage,  0.0, 200.0, paso_real, 1, 10, red, green, blue, 4, 1);
+    lineRtoL(colourImage,  0.0, 225.0, paso_real, 1, 10, red, green, blue, 5, 1);
+    lineLtoR(colourImage,  0.0, 250.0, paso_real, 1, 10, red, green, blue, 5, 1);
+  
+
+    output.println("G0 Z0.0");
+    output.println("G0 X0.0 Y0.0");
+   // output.println("G0 Z5.0");
+    output.flush(); // Write the remaining data
+    output.close(); // Finish the file
+    endRecord();
+    println(cant);
+    
+    
+  }
+  
+  //********************
+  
+   //*********************************** 
+
+  public void drawMagenta(String colourName, String imagePath, int red, int green, int blue ) {
+    beginRecord(SVG, "magenta.svg");
+    int paso_real = int(7 * (coef + ((100 - densidad)/100)));
+    
     cant = 0;
     PImage colourImage = loadImage(imagePath);
 
     output = createWriter(gcodePath + "/" + imageName+"_"+colourName+".gcode");
     output.println("G21 G90");
-    output.println("G0 F2000");
+    output.println("M92 Z1600.0");
+    output.println("G28");
+    output.println("G0 F500");
+    output.println("G0 Z4.5"); 
+    output.println("M1 Put pen and click");
 
-    lineLtoR(colourImage,  0.0, 13.0, 12, 1, 10, red, green, blue, 8, 0);
-    lineRtoL(colourImage,  0.0, 26.0, 12, 1, 10, red, green, blue, 0, 8);
-    lineLtoR(colourImage,  0.0, 40.0, 12, 1, 10, red, green, blue, 7, 0);
-    lineRtoL(colourImage,  0.0, 53.0, 12, 1, 10, red, green, blue, 0, 7);
-    lineLtoR(colourImage,  0.0, 34.0, 12, 1, 10, red, green, blue, 6, 0);
-    lineRtoL(colourImage,  0.0, 80.0, 12, 1, 10, red, green, blue, 0, 6);
-    lineLtoR(colourImage,  0.0, 68.0, 12, 1, 10, red, green, blue, 5, 0);
-    lineRtoL(colourImage,  0.0, 107.0, 12, 1, 10, red, green, blue, 0, 5);
-    lineLtoR(colourImage,  0.0, 102.0, 12, 1, 10, red, green, blue, 4, 0);
-    lineRtoL(colourImage,  0.0, 134.0, 12, 1, 10, red, green, blue, 0, 4);
-    lineLtoR(colourImage,  0.0, 136.0, 12, 1, 10, red, green, blue, 3, 0);
-    lineRtoL(colourImage,  0.0, 160.0, 12, 1, 10, red, green, blue, 0, 3);
-    lineLtoR(colourImage,  0.0, 170.0, 12, 1, 10, red, green, blue, 2, 0);
-    lineRtoL(colourImage,  0.0, 187.0, 12, 1, 10, red, green, blue, 0, 2);
-    lineLtoR(colourImage,  0.0, 200.0, 12, 1, 10, red, green, blue, 1, 0);
-    lineRtoL(colourImage,  0.0, 214.0, 12, 1, 10, red, green, blue, 0, 1);
-    lineLtoR(colourImage,  0.0, 228.0, 12, 1, 10, red, green, blue, 0, 0);
-    lineRtoL(colourImage,  0.0, 241.0, 12, 1, 10, red, green, blue, 0, 0);
+    lineLtoR(colourImage,  0.0,  25.0, paso_real, 1, 10, red, green, blue, 1, 1);
+    lineRtoL(colourImage,  0.0,  50.0, paso_real, 1, 10, red, green, blue, 1, 1);
+    lineLtoR(colourImage,  0.0,  75.0, paso_real, 1, 10, red, green, blue, 1, 2);
+    lineRtoL(colourImage,  0.0, 100.0, paso_real, 1, 10, red, green, blue, 1, 2);
+    lineLtoR(colourImage,  0.0, 125.0, paso_real, 1, 10, red, green, blue, 1, 3);
+    lineRtoL(colourImage,  0.0, 150.0, paso_real, 1, 10, red, green, blue, 1, 3);
+    lineLtoR(colourImage,  0.0, 175.0, paso_real, 1, 10, red, green, blue, 1, 4);
+    lineRtoL(colourImage,  0.0, 200.0, paso_real, 1, 10, red, green, blue, 1, 4);
+    lineRtoL(colourImage,  0.0, 225.0, paso_real, 1, 10, red, green, blue, 1, 5);
+    lineLtoR(colourImage,  0.0, 250.0, paso_real, 1, 10, red, green, blue, 1, 5);
+  
 
-    output.println("M107");
+    output.println("G0 Z0.0");
     output.println("G0 X0.0 Y0.0");
-    output.println("M107");
+   // output.println("G0 Z5.0");
     output.flush(); // Write the remaining data
     output.close(); // Finish the file
-    
+    endRecord();
     println(cant);
     
     
   }
+  
+  //********************
+  
+    //*********************************** 
+
+  public void drawYellow(String colourName, String imagePath, int red, int green, int blue ) {
+    beginRecord(SVG, "yellow.svg");
+    int paso_real = int(7 * (coef + ((100 - densidad)/100)));
+    cant = 0;
+    PImage colourImage = loadImage(imagePath);
+
+    output = createWriter(gcodePath + "/" + imageName+"_"+colourName+".gcode");
+    output.println("G21 G90");
+    output.println("M92 Z1600.0");
+    output.println("G28");
+    output.println("G0 F500");
+    output.println("G0 Z4.5"); 
+    output.println("M1 Put pen and click");
+
+    lineLtoR(colourImage,  0.0,  25.0, paso_real, 1, 10, red, green, blue, 1, 2);
+    lineRtoL(colourImage,  0.0,  50.0, paso_real, 1, 10, red, green, blue, 1, 2);
+    lineLtoR(colourImage,  0.0,  75.0, paso_real, 1, 10, red, green, blue, 2, 2);
+    lineRtoL(colourImage,  0.0, 100.0, paso_real, 1, 10, red, green, blue, 2, 2);
+    lineLtoR(colourImage,  0.0, 125.0, paso_real, 1, 10, red, green, blue, 3, 2);
+    lineRtoL(colourImage,  0.0, 150.0, paso_real, 1, 10, red, green, blue, 3, 2);
+    lineLtoR(colourImage,  0.0, 175.0, paso_real, 1, 10, red, green, blue, 4, 2);
+    lineRtoL(colourImage,  0.0, 200.0, paso_real, 1, 10, red, green, blue, 4, 2);
+    lineRtoL(colourImage,  0.0, 225.0, paso_real, 1, 10, red, green, blue, 5, 2);
+    lineLtoR(colourImage,  0.0, 250.0, paso_real, 1, 10, red, green, blue, 5, 2);
+  
+
+    output.println("G0 Z0.0");
+    output.println("G0 X0.0 Y0.0");
+   // output.println("G0 Z5.0");
+    output.flush(); // Write the remaining data
+    output.close(); // Finish the file
+    endRecord();
+    println(cant);
+    
+    
+  }
+  
+  //********************
+  
+  public void drawBlack(String colourName, String imagePath, int red, int green, int blue ) {
+    beginRecord(SVG, "black.svg");
+    int paso_real = int(7 * (coef + ((100 - densidad)/100)));
+    cant = 0;
+    PImage colourImage = loadImage(imagePath);
+
+    output = createWriter(gcodePath + "/" + imageName+"_"+colourName+".gcode");
+    output.println("G21 G90");
+    output.println("M92 Z1600.0");
+    output.println("G28");
+    output.println("G0 F500");
+    output.println("G0 Z4.5"); 
+    output.println("M1 Put pen and click");
+
+    lineLtoR(colourImage,  0.0,  25.0, paso_real, 1, 5, red, green, blue, 1, 0);
+    lineRtoL(colourImage,  0.0,  50.0, paso_real, 1, 5, red, green, blue, 1, 0);
+    lineLtoR(colourImage,  0.0,  75.0, paso_real, 1, 5, red, green, blue, 2, 0);
+    lineRtoL(colourImage,  0.0, 100.0, paso_real, 1, 5, red, green, blue, 2, 0);
+    lineLtoR(colourImage,  0.0, 125.0, paso_real, 1, 5, red, green, blue, 3, 0);
+    lineRtoL(colourImage,  0.0, 150.0, paso_real, 1, 5, red, green, blue, 3, 0);
+    lineLtoR(colourImage,  0.0, 175.0, paso_real, 1, 5, red, green, blue, 4, 0);
+    lineRtoL(colourImage,  0.0, 200.0, paso_real, 1, 5, red, green, blue, 4, 0);
+    lineLtoR(colourImage,  0.0, 225.0, paso_real, 1, 5, red, green, blue, 5, 0);
+    lineLtoR(colourImage,  0.0, 250.0, paso_real, 1, 5, red, green, blue, 5, 0);
+    output.println("G0 Z0.0");
+    output.println("G0 X0.0 Y0.0");
+   // output.println("G0 Z5.0");
+    output.flush(); // Write the remaining data
+    output.close(); // Finish the file
+    endRecord();
+    println(cant);
+    
+    
+  }
+  
+  
+  //********************lineLtoR --> rayasd3
 
   public void lineLtoR(PImage img, float lim_inf, float lim_sup, int paso, int trazo, int largo_min, int rojo, int verde, int azul, int deltax, int deltay)
   {
-
+    int sentido = 1;
+    float escala = 100 / Scale;
+    
     x=0+paso-deltax;
-    y=img.height+deltay;
-    fin_lineax = 0;
-    fin_lineay = 0;
-    desdex = 0;  
+    y=img.height+deltay-2;
+    fin_lineax = img.width;
+    fin_lineay = img.height;
+    desdex = -img.height;  
     desdey = 0; 
-    for (int z=-img.height; z < img.width; z=z+paso)
+    for (int z=-img.height; z < img.width*escala; z=z+paso)
 
     {
 
@@ -81,11 +222,11 @@ class CrossHatchAlgorithm {
       if (z <= 0)
       {
 
-        y=y+z+deltay;
+        y=(z*-1)+deltay;
         x=0+deltax;
       } else
       {
-        y=0;
+        y=0+deltay;
         x=z+deltax;
       }
 
@@ -94,17 +235,16 @@ class CrossHatchAlgorithm {
       { 
 
         int pos = y*img.width + x;
-
         float val = brightness(img.pixels[pos]);
-
-        if ( val >= lim_inf && val <= lim_sup)
-        {
+       
           desdex = x;
           desdey = y;
           fin_lineax = x;
           fin_lineay = y;
-
-          while ( val >= lim_inf && val <= lim_sup && x < img.width-1 && y < img.height-1)
+          
+      if ( val >= lim_inf && val <= lim_sup)
+         {
+          while ( val >= lim_inf && val <= lim_sup && x > 0  && y < img.height-1 && x < img.width)
           { 
             pos = y*img.width + x;
             val = brightness(img.pixels[pos]);
@@ -116,14 +256,18 @@ class CrossHatchAlgorithm {
 
           stroke(rojo, verde, azul);
           strokeWeight(trazo);
-          if ((fin_lineax - desdex) > largo_min) {
-            line(desdex, desdey, fin_lineax, fin_lineay);
-
-            output.println("M107");
-            output.println("G1 X" + desdex/scale +" Y"+ desdey/scale );
-            output.println("M106");
-            output.println("G1 X" + fin_lineax/scale + " Y" + fin_lineay/scale);
-
+          if(dist(desdex,desdey,fin_lineax,fin_lineay) > largo_min) {
+          //if ((fin_lineax - desdex) > largo_min) {
+            line(desdex/escala, desdey/escala, fin_lineax/escala, fin_lineay/escala);
+            output.println("G0 F500");
+            output.println("G0 Z0.0");
+            output.println("G0 F8000");
+            output.println("G1 X" + desdex/escala +" Y"+ desdey/escala );
+            output.println("G0 F500");
+            output.println("G0 Z5.0");
+            output.println("G0 F8000");
+            output.println("G1 X" + fin_lineax/escala + " Y" + fin_lineay/escala);
+            output.println("G0 F500"); 
 
             cant++;
           }
@@ -132,15 +276,17 @@ class CrossHatchAlgorithm {
           x++;
           y++;
         }
-      }
+      }/////////
+     sentido = sentido * -1; 
     }
   }
 
 
-  //****************************************
+  //*******************************lineRtoL --> rayasd2
   public void lineRtoL(PImage img, float lim_inf, float lim_sup, int paso, int trazo, int largo_min, int rojo, int verde, int azul, int deltax, int deltay)
   {
-
+    int sentido = 1;
+    float escala = 100 / Scale;
     x=0-deltax+img.width;
 
     y=img.height+deltay;
@@ -172,14 +318,21 @@ class CrossHatchAlgorithm {
 
         float val = brightness(img.pixels[pos]);
 
-        if ( val >= lim_inf && val <= lim_sup)
-        {
+       
           desdex = x;
           desdey = y;
           fin_lineax = x;
           fin_lineay = y;
-
-          while ( val >= lim_inf && val <= lim_sup && x > 0 && y < img.height-1)
+          if(desdex - img.width-1 > 0 || fin_lineax < 10)
+        {
+        val = 0.0;
+       }    
+          
+          
+          
+        if ( val >= lim_inf && val <= lim_sup)
+          {
+          while ( val >= lim_inf && val <= lim_sup && x > 0 && y < img.height-1 && x > 0)
           { 
             pos = y*img.width + x;
             val = brightness(img.pixels[pos]);
@@ -191,15 +344,19 @@ class CrossHatchAlgorithm {
 
           stroke(rojo, verde, azul);
           strokeWeight(trazo);
-          if ((desdex - fin_lineax) > largo_min) {  
-            line(desdex, desdey, fin_lineax, fin_lineay);
+          if(dist(desdex,desdey,fin_lineax,fin_lineay) > largo_min){
+          //if ((desdex - fin_lineax) > largo_min) {  
+            line(desdex/escala, desdey/escala, fin_lineax/escala, fin_lineay/escala);
 
-
-            output.println("M107");
-            output.println("G1 X" + desdex/scale +" Y"+ desdey/scale );
-            output.println("M106");
-            output.println("G1 X" + fin_lineax/scale + " Y" + fin_lineay/scale);
-
+            output.println("G0 F500");
+            output.println("G0 Z0.0");
+            output.println("G0 F8000");
+            output.println("G1 X" + desdex/escala +" Y"+ desdey/escala );
+            output.println("G0 F500");
+            output.println("G0 Z5.0");
+            output.println("G0 F8000");
+            output.println("G1 X" + fin_lineax/escala + " Y" + fin_lineay/escala);
+            output.println("G0 F500");
 
             cant++;
           }
@@ -212,4 +369,3 @@ class CrossHatchAlgorithm {
     }
   }
 }
-

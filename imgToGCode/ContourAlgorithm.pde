@@ -1,5 +1,5 @@
 class ContourAlgorithm {
-  private float levels = 3;                    // number of contours
+  private int levels = 5;                    // number of contours
   private BlobDetection[] yellowBlobDetection ;
   private BlobDetection[] magentaBlobDetection ;
   private BlobDetection[] cianBlobDetection ;
@@ -8,17 +8,27 @@ class ContourAlgorithm {
   private PImage processImage;
   private int counter = 0;
   private int up = 0;
+  private float level;
   private float factor = 1.0;
   private PrintWriter output;
 
-  public ContourAlgorithm(PImage image, float scale, float levels) {
+public ContourAlgorithm(PImage image, float scale) {
     this.originalImage = image;
-    this.factor  = 1/scale;
+    this.factor  = 100/scale;
+    yellowBlobDetection = new BlobDetection[levels];
+    magentaBlobDetection = new BlobDetection[levels];
+    cianBlobDetection = new BlobDetection[levels];
+    blackBlobDetection = new BlobDetection[levels];
+  }
+
+  public ContourAlgorithm(PImage image, float scale, int levels) {
+    this.originalImage = image;
+    this.factor  = 100/scale;
     this.levels = levels;
-    yellowBlobDetection = new BlobDetection[int(levels)];
-    magentaBlobDetection = new BlobDetection[int(levels)];
-    cianBlobDetection = new BlobDetection[int(levels)];
-    blackBlobDetection = new BlobDetection[int(levels)];
+    yellowBlobDetection = new BlobDetection[levels];
+    magentaBlobDetection = new BlobDetection[levels];
+    cianBlobDetection = new BlobDetection[levels];
+    blackBlobDetection = new BlobDetection[levels];
   }
 
 
@@ -27,92 +37,106 @@ class ContourAlgorithm {
   }
 
   public void calculate() {
+    
+  strokeWeight(3);
+    
 
     output = createWriter(gcodePath + "/yline.gcode");
-    output.println("G21 G90");
-    output.println("G0 F2000");
+  //  output.println("G21 G90");
+  //  output.println("G0 F2000");
     processImage = loadImage(generatedImgs + "/yellow-img.jpg");
     for (int i=1; i<levels; i++) {
       yellowBlobDetection[i] = new BlobDetection(processImage.width, processImage.height);
       yellowBlobDetection[i].setPosDiscrimination(true);
-      yellowBlobDetection[i].setThreshold(i/levels);
-      fastblur(processImage, 2);
+      yellowBlobDetection[i].setThreshold(i*(1.0/levels));
+      println("amarillo threshold "+(i*(1.0/levels)));
+   //   print(levels);
+      fastblur(processImage, 1);
       yellowBlobDetection[i].computeBlobs(processImage.pixels);
     }
 
 
     for (int i=1; i<levels; i++) {
 
-      drawContours(i, yellowBlobDetection, 255, 255, 0);
+      drawContours(i, yellowBlobDetection, 255, 255, 0, 0.1);
     }
-    output.flush(); // Write the remaining data
-    output.close(); // Finish the file
+  //  output.flush(); // Write the remaining data
+   // output.close(); // Finish the file
 
 
       output = createWriter(gcodePath + "/mline.gcode");
-    output.println("G21 G90");
-    output.println("G0 F2000");
+   // output.println("G21 G90");
+    //output.println("G0 F2000");
     processImage = loadImage(generatedImgs + "/magenta-img.jpg");
     for (int i=1; i<levels; i++) {
       magentaBlobDetection[i] = new BlobDetection(processImage.width, processImage.height);
       magentaBlobDetection[i].setPosDiscrimination(true);
-      magentaBlobDetection[i].setThreshold(i/levels);
-      fastblur(processImage, 2);
+      magentaBlobDetection[i].setThreshold(i*(1.0/levels));
+      println(i*(1.0/levels));
+    // println("threshold magenta "+(i*(1.0/levels)));
+    //  println(levels);
+      fastblur(processImage, 1);
       magentaBlobDetection[i].computeBlobs(processImage.pixels);
     }
 
 
     for (int i=1; i<levels; i++) {
 
-      drawContours(i, magentaBlobDetection, 255, 0, 255);
+      drawContours(i, magentaBlobDetection, 255, 0, 255, 0.5);
     }
-    output.flush(); // Write the remaining data
-    output.close(); // Finish the file
+   // output.flush(); // Write the remaining data
+   // output.close(); // Finish the file
 
 
       output = createWriter(gcodePath + "/cline.gcode");
-    output.println("G21 G90");
-    output.println("G0 F2000");
+    //output.println("G21 G90");
+    //output.println("G0 F2000");
     processImage = loadImage(generatedImgs + "/cyan-img.jpg");
     for (int i=1; i<levels; i++) {
       cianBlobDetection[i] = new BlobDetection(processImage.width, processImage.height);
       cianBlobDetection[i].setPosDiscrimination(true);
-      cianBlobDetection[i].setThreshold(i/levels);
-      fastblur(processImage, 2);
+      cianBlobDetection[i].setThreshold(i*(1.0/levels));
+       println("cian Threshold"+(i*(1.0/levels)));
+    //  print(levels);
+      fastblur(processImage, 1);
       cianBlobDetection[i].computeBlobs(processImage.pixels);
     }  
 
 
     for (int i=1; i<levels; i++) {
 
-      drawContours(i, cianBlobDetection, 0, 255, 255);
+      drawContours(i, cianBlobDetection, 0, 255, 255, 0.5);
     }
-    output.flush(); // Write the remaining data
-    output.close(); // Finish the file
+   // output.flush(); // Write the remaining data
+   // output.close(); // Finish the file
 
-      output = createWriter(gcodePath + "/kline.gcode");
-    output.println("G21 G90");
-    output.println("G0 F2000"); 
+     output = createWriter(gcodePath + "/kline.gcode");
+   // output.println("G21 G90");
+   // output.println("G0 F2000"); 
     processImage = loadImage(generatedImgs + "/black-img.jpg");
     for (int i=1; i<levels; i++) {
       blackBlobDetection[i] = new BlobDetection(processImage.width, processImage.height);
       blackBlobDetection[i].setPosDiscrimination(true);
-      blackBlobDetection[i].setThreshold(i/levels);
-      fastblur(processImage, 2);
+      blackBlobDetection[i].setThreshold(i*(1.0/levels));
+     println("black Threshold "+(i*(1.0/levels)));
+   //    print("black ");
+   //   print(levels);
+      fastblur(processImage, 1);
       blackBlobDetection[i].computeBlobs(processImage.pixels);
     }
 
     for (int i=1; i<levels; i++) {
 
-      drawContours(i, blackBlobDetection, 0, 0, 0);
+      drawContours(i, blackBlobDetection, 0, 0, 0, 0.5);
     } 
 
 
-    output.flush(); // Write the remaining data
-    output.close(); // Finish the file
+    //output.flush(); // Write the remaining data
+   // output.close(); // Finish the file
+   
   }
 
-  private void drawContours(int i, BlobDetection[] cmyk, int re, int gr, int bl) {
+  private void drawContours(int i, BlobDetection[] cmyk, int re, int gr, int bl, float strk) {
 
     Blob b;
     EdgeVertex eA, eB, eAnt, eBnt;
@@ -122,15 +146,16 @@ class ContourAlgorithm {
       b=cmyk[i].getBlob(n);
       if (b!=null) {
         stroke(re, gr, bl);
-        strokeWeight(2);
+        strokeWeight(strk);
+    
         println(b.getEdgeNb());
         if (b.getEdgeNb() > 50)
         {
           output.println("M107");
           eA = b.getEdgeVertexA(0);
           eB = b.getEdgeVertexB(0);
-          output.println("G0 X"+eA.x*imgPreview.getOriginalWidth()*factor+" Y"+eA.y*imgPreview.getOriginalHeight()*factor);
-          output.println("M106");
+       //   output.println("G0 X"+eA.x*imgPreview.getOriginalWidth()*factor+" Y"+eA.y*imgPreview.getOriginalHeight()*factor);
+       //   output.println("M106");
 
 
           for (int m=1; m<b.getEdgeNb (); m++) {
@@ -145,19 +170,30 @@ class ContourAlgorithm {
 
               {
 
-                line(eA.x*originalImage.width, eA.y*originalImage.height, 
-                eB.x*originalImage.width, eB.y*originalImage.height );
+             //   line(eA.x*originalImage.width, eA.y*originalImage.height, 
+             //   eB.x*originalImage.width, eB.y*originalImage.height );
+            ///
+               line(eA.x*(originalImage.width/factor), eA.y*(originalImage.height/factor), 
+                eB.x*(originalImage.width/factor), eB.y*(originalImage.height/factor) );
+         
+         
+            
+             // line(b.x*originalImage.width, b.y*originalImage.height,eA.x*originalImage.width,eA.y*originalImage.height );
+            /// 
                 if (m % 5 == 0)
+          
+               
+               
                 {
 
 
                   if (abs(eA.x*originalImage.width*factor - eAnt.x*originalImage.height*factor) > 20) {
-                    output.println("M107");
+                 //   output.println("M107");
                     up = 1;
                   }
                   output.println("G0 X"+eA.x*originalImage.width*factor+" Y"+eA.y*originalImage.height*factor);
                   if (up == 1) {
-                    output.println("M106");
+                  //  output.println("M106");
                     up = 0;
                   }
                 }
@@ -169,8 +205,9 @@ class ContourAlgorithm {
         }
       }
     }
-    output.println("M107");  
-    output.println("G0 X0 Y0");
+  //  println("counter "+counter);
+  //  output.println("M107");  
+   // output.println("G0 X0 Y0");
   }
   // ==================================================
   // Super Fast Blur v1.1
@@ -260,4 +297,3 @@ class ContourAlgorithm {
     }
   }
 }
-

@@ -80,4 +80,3 @@ class Cuatricromia {
     image(kimg, x, y+270, (kimg.width/8), (kimg.height/8));
   }
 }
-

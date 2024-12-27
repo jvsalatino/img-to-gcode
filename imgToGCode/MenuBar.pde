@@ -7,6 +7,8 @@ public class MenuBar {
   private int xPosition = 0;
   private int yPosition = 0;
   private String[] filenames;
+  private int test;
+ 
   
   public MenuBar(PApplet p, String dataPath) {
     cp5 = new ControlP5(p);
@@ -40,55 +42,76 @@ public class MenuBar {
                 .setColorActive(color(50))
                   .setColorForeground(color(128));
 
-    filesListBox.captionLabel().toUpperCase(true);
-    filesListBox.captionLabel().set("Select file");
-    filesListBox.captionLabel().setColor(0xffff0000);
-    filesListBox.captionLabel().style().marginTop = 3;
-    filesListBox.valueLabel().style().marginTop = 3;
+    filesListBox.getCaptionLabel().toUpperCase(true);
+    filesListBox.getCaptionLabel().set("Select file");
+    filesListBox.getCaptionLabel().setColor(0xffff0000);
+    filesListBox.getCaptionLabel().getStyle().marginTop = 3;
+    //filesListBox.valueLabel().style().marginTop = 3;
 
     for (int i=0; i< this.filenames.length; i++) {
-      ListBoxItem lbi = filesListBox.addItem(filenames[i], i);
-      lbi.setColorBackground(0);
+       filesListBox.addItem(filenames[i], i);
+      //ListBoxItem lbi = filesListBox.addItem(filenames[i], i);
+      //lbi.setColorBackground(0);
+     
     }
-    
-     cp5.addButton("cuatricromia")
-      .setPosition(xPosition + 130, yPosition)
-        .setSize(60, 30)
-          .setValue(0)
-            .activateBy(ControlP5.RELEASE);
 
     cp5.addButton("crosshatch")
-      .setPosition(xPosition + 130, yPosition + 30)
+      .setPosition(xPosition + 130, yPosition  )
         .setSize(60, 30)
           .setValue(0)
             .activateBy(ControlP5.RELEASE);
 
 
     cp5.addButton("contour")
-      .setPosition(xPosition + 130 , yPosition + 60)
+      .setPosition(xPosition + 130 , yPosition + 30)
         .setSize(60, 30)
           .setValue(0)
             .activateBy(ControlP5.RELEASE);
 
 
     cp5.addButton("clear")
-      .setPosition(xPosition + 130, yPosition + 90)
+      .setPosition(xPosition + 130, yPosition + 60)
         .setSize(60, 30)
           .setValue(0)
             .activateBy(ControlP5.RELEASE);
 
+ //******************SLIDER****************
+   cp5.addSlider("Densidad")
+     .setColorLabel(255)
+     .setColorValue(color(0,40,90))
+     .setPosition(960,25)
+     .setSize(220,20)
+     .setRange(1.0,100.0) // values can range from big to small as well
+     .setValue(50)
+     .setSliderMode(Slider.FLEXIBLE)
+     .setNumberOfTickMarks(130)
+    // .snapToTickMarks(true)
+     ;
 
-
-    cp5.addButton( "savejpg" )
-      .setPosition(xPosition + 130, yPosition + 120)
-        .setSize( 60, 30 )
-          .setValue(0)
-            .activateBy(ControlP5.RELEASE);
+  //******************SLIDER****************
+   cp5.addSlider("Scale")
+     .setColorLabel(255)
+     .setColorValue(color(0,40,90))
+     .setPosition(960,75)
+     .setSize(220,20)
+     .setRange(1.0,100.0) // values can range from big to small as well
+     .setValue(50)
+     .setSliderMode(Slider.FLEXIBLE)
+     .setNumberOfTickMarks(130)
+    // .snapToTickMarks(true)
+     ; 
+            
+      
   }
+  
+
 
   public void controlEvent(ControlEvent theEvent) {
-    if (theEvent.isGroup() && theEvent.name().equals("filesList")) {
-      selectedFileIndex = (int)theEvent.group().value();
+   // if (theEvent.isGroup() && theEvent.name().equals("filesList")) {
+    //  selectedFileIndex = (int)theEvent.getGroup().getValue();
+    if(theEvent.isFrom(cp5.getController("filesList"))){
+    selectedFileIndex = int(theEvent.getController().getValue());
+   // println("test "+test); 
     }
   }
 
@@ -110,4 +133,3 @@ public class MenuBar {
     }
   }
 }
-
