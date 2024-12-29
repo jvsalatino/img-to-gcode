@@ -11,12 +11,7 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-imgToGCode/gcode/
-imgToGCode/generatedImages/
-imgToGCode/black.svg
-imgToGCode/cian.svg
-imgToGCode/imgToGCode.pde
-imgToGCode/magenta.svg
-imgToGCode/resultImages/banzich.jpg-final.jpg
-imgToGCode/resultImages/bebe.jpg-final.jpg
-imgToGCode/yellow.svg
+imgToGCode/gcode/*
+imgToGCode/generatedImages/*
+imgToGCode/resultImages/*
+imgToGCode/svgs/*
