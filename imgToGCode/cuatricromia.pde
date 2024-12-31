@@ -61,11 +61,11 @@ class Cuatricromia {
     kimg.updatePixels();
   }
 
-  public void saveImages(String path) {
-    yimg.save(path+"/yellow-img.jpg");
-    mimg.save(path+"/magenta-img.jpg");
-    cimg.save(path+"/cyan-img.jpg");
-    kimg.save(path+"/black-img.jpg");
+  public void saveImages(String path, String imageName) {
+    yimg.save(path+"/"+imageName+"_yellow.jpg");
+    mimg.save(path+"/"+imageName+"_magenta.jpg");
+    cimg.save(path+"/"+imageName+"_cyan.jpg");
+    kimg.save(path+"/"+imageName+"_black.jpg");
   }
 
   public void showPreview(int x, int y) {

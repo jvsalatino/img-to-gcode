@@ -7,7 +7,7 @@ public class MenuBar {
   private int xPosition = 0;
   private int yPosition = 0;
   private String[] filenames;
-  private int test;
+  //private int test;
  
   
   public MenuBar(PApplet p, String dataPath) {
